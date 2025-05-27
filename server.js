@@ -10,7 +10,10 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+// Allow requests from your React frontend on port 3000
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 app.use(express.json());
 
 // Routes
