@@ -13,15 +13,17 @@ const register = async (req, res) => {
     // Create JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-    res.json({ token });
+    // Exclude password from user object
+    const { password: pwd, ...userWithoutPassword } = user.toObject();
+
+    // Return token and user (without password)
+    res.json({ token, user: userWithoutPassword });
   } catch (err) {
     res.status(500).json({ message: 'Registration failed', error: err.message });
   }
 };
 
 // Login an existing user
-
-
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -46,6 +48,5 @@ const login = async (req, res) => {
     res.status(500).json({ message: 'Login failed', error: err.message });
   }
 };
-
 
 module.exports = { register, login };
